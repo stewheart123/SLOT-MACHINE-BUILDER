@@ -1,9 +1,7 @@
 /**
  * SLOT MACHINE BUILDER
- * created by Stewart Tuckwood
- *
+ * created by Stewart Tuckwood *
  * Use this project as a baseplate for other slot-based builds.
- *
  * Use the different branches to establish differing game styles
  */
 
@@ -83,12 +81,29 @@ async function makeGameScreen() {
   loadingContainer.destroy();
 
   // game area
+  const backgroundPanel = new PIXI.Graphics();
+  backgroundPanel.lineStyle(2, 0xffffff, 4);
+  backgroundPanel.drawRect(0, 0, 500, 500);
+
+  const gameContainer = new PIXI.Container();
+  gameContainer.addChild(backgroundPanel);
+  gameContainer.width = gameAreaPanelWidth;
+  gameContainer.height = gameAreaPanelHeight;
+  gameContainer.position.x = app.view.width / 2 - gameContainer.width / 2;
+  gameContainer.position.y = app.view.height / 2 - gameContainer.height / 2;
+  app.stage.addChild(gameContainer);
 
   // game ui
 
   // title
+  const headerContainer = new PIXI.Container();
+  headerContainer.width = app.view.width;
+  headerContainer.height = headerHeight;
+  headerContainer.position.set(0, 0);
+  app.stage.addChild(headerContainer);
+
   const gameTitle = new PIXI.Text("Slot Machine Builder", {
-    fontSize: 50,
+    fontSize: titleFontSize,
     fill: 0xffffff,
     fontFamily: "Darumadrop One",
     dropShadow: true,
@@ -96,11 +111,15 @@ async function makeGameScreen() {
     dropShadowBlur: 2,
   });
   gameTitle.anchor.set(0.5);
-  gameTitle.position.set(app.view.width / 2, 50);
-  app.stage.addChild(gameTitle);
-  gameTitle.updateText();
+  gameTitle.position.set(app.view.width / 2, titleYOffset);
+  headerContainer.addChild(gameTitle);
+
+  window.addEventListener("resize", plotGraphics);
+
+  //utility functions
+  function plotGraphics() {
+    gameTitle.position.set(app.view.width / 2, titleYOffset);
+  }
 }
 
 init().then(makeGameScreen);
-
-//utility functions
