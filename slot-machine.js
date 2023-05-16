@@ -90,18 +90,41 @@ async function makeGameScreen() {
   gameContainer.width = gameAreaPanelWidth;
   gameContainer.height = gameAreaPanelHeight;
   gameContainer.position.x = app.view.width / 2 - gameContainer.width / 2;
-  gameContainer.position.y = app.view.height / 2 - gameContainer.height / 2;
+  gameContainer.position.y = gameContainerYOffset;
   app.stage.addChild(gameContainer);
 
-  // game ui
+  // GAME UI
+  //balance, time, game name, total bet
+
+  /**
+   *  game menu button > 
+   * pay table = how much you get paid!
+   * settings = sound / sound FX / left hand mode
+   * Questions - defines all terms mentioned in the game, rules etc
+   * close modal button
+   */
+
+  const gameUIContainer = new PIXI.Container();
+  app.stage.addChild(gameUIContainer);
+  const gameUIPanel = new PIXI.Graphics();
+  //gameUIPanel.pivot.set(0.5);
+  gameUIPanel.beginFill(0x000000, 0.5);
+  gameUIPanel.lineStyle(2, 0xffffff, 4);
+  gameUIPanel.drawRect(0,0, gameUIPanelWidth, footerHeight);
+  gameUIPanel.endFill();
+  gameUIContainer.addChild(gameUIPanel);
+  app.stage.addChild(gameUIContainer);
+  gameUIContainer.position.set((app.view.width / 2) - (gameUIPanelWidth / 2) , app.view.height - footerHeight);
+
+  //spin button
 
   // title
   const headerContainer = new PIXI.Container();
-  headerContainer.width = app.view.width;
-  headerContainer.height = headerHeight;
-  headerContainer.position.set(0, 0);
+  // headerContainer.width = app.view.width;
+  // headerContainer.height = headerHeight;
+  //headerContainer.position.set(0, 0);
   app.stage.addChild(headerContainer);
-
+  
   const gameTitle = new PIXI.Text("Slot Machine Builder", {
     fontSize: titleFontSize,
     fill: 0xffffff,
@@ -110,16 +133,25 @@ async function makeGameScreen() {
     dropShadowColor: "#000000",
     dropShadowBlur: 2,
   });
-  gameTitle.anchor.set(0.5);
-  gameTitle.position.set(app.view.width / 2, titleYOffset);
-  headerContainer.addChild(gameTitle);
 
+  gameTitle.anchor.set(0.5);
+  headerContainer.position.set(headerContainerWidth, titleYOffset);
+  gameTitle.position.set(0,0);
+  headerContainer.addChild(gameTitle);
+  
+  // re-draw items on window resize
   window.addEventListener("resize", plotGraphics);
 
-  //utility functions
+  
   function plotGraphics() {
-    gameTitle.position.set(app.view.width / 2, titleYOffset);
+    // commands to re-draw the containers...
   }
 }
+
+// game instruction screen 
+/**
+ * - game logo
+ * - explain what qualifies as a win
+ */
 
 init().then(makeGameScreen);

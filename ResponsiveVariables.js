@@ -1,18 +1,28 @@
+/**
+ * Use variables here to determine the desktop and mobile sizes
+ * 
+ */
+
 console.log(window.innerWidth);
 
-let headerHeight = 200;
-let footerHeight = 250;
-let gameAreaPanelWidth = 500;
-let gameAreaPanelHeight = window.innerHeight - headerHeight;
+let headerHeight = 100;
+let footerHeight = 100;
+let gameAreaPanelWidth = 600;
+let gameAreaPanelHeight = window.innerHeight - footerHeight;
+let gameContainerYOffset = 0;
 let titleFontSize = 50;
-let titleYOffset = headerHeight / 4;
+let titleYOffset = 100;
+let headerContainerWidth = (window.innerWidth / 2 ) - gameAreaPanelWidth; 
+let gameUIPanelWidth = window.innerWidth / 2;
 
 if(window.innerWidth < 768) {
     console.log('mobile mode');
-    headerHeight = 100;
-    footerHeight = 200;
+    gameContainerYOffset = 100;
+    footerHeight = 100;
     gameAreaPanelWidth = window.innerWidth - 40;
-    gameAreaPanelHeight = window.innerHeight - (headerHeight + footerHeight);
+    gameAreaPanelHeight = window.innerHeight - (footerHeight + headerHeight);
     titleFontSize = 36;
     titleYOffset = headerHeight / 2;
+    headerContainerWidth = window.innerWidth / 2; 
+    gameUIPanelWidth = window.innerWidth;
 }

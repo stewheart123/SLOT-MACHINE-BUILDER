@@ -1,3 +1,6 @@
+/**
+ * Add objects in bundles based on which scene the asset is used on
+ */
 const assetBundles = [{
     name: 'load-screen',
     assets: [
