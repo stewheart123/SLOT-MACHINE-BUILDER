@@ -83,19 +83,52 @@ async function makeGameScreen() {
   // game area
   const backgroundPanel = new PIXI.Graphics();
   backgroundPanel.lineStyle(2, 0xffffff, 4);
+  backgroundPanel.beginFill(0x000000, 0.5);
   backgroundPanel.drawRect(0, 0, 500, 500);
+  backgroundPanel.endFill();
 
   const gameContainer = new PIXI.Container();
   gameContainer.addChild(backgroundPanel);
   gameContainer.width = gameAreaPanelWidth;
   gameContainer.height = gameAreaPanelHeight;
+  
+  
+  //start position
   gameContainer.position.x = app.view.width / 2 - gameContainer.width / 2;
-  gameContainer.position.y = gameContainerYOffset;
+  //gameContainer.position.y = gameContainerYOffset;
+  gameContainer.position.y = 0 - (gameContainer.height);
+
   app.stage.addChild(gameContainer);
+
+  //end position
+  const gameContainerEndPosition = new PIXI.Point((app.view.width / 2) - (gameContainer.width / 2),gameContainerYOffset );
+  let gameContainerAnimationComplete = false;
+  app.ticker.add(() => {
+  if(!gameContainerAnimationComplete) {
+
+    const distance = Math.sqrt(
+      Math.pow(gameContainer.position.x - gameContainerEndPosition.x, 2) +
+      Math.pow(gameContainer.position.y - gameContainerEndPosition.y, 2)
+    );
+
+    const threshold = 1; // Adjust the threshold as needed
+      if (distance <= threshold) {
+        // Animation complete, do something here
+        console.log("Animation complete!");
+        gameContainerAnimationComplete = true;
+        return; // Exit the update loop
+      }
+
+      // Move the container towards the target position
+      const speed = 0.05; // Adjust the speed of the animation
+      gameContainer.position.x += (gameContainerEndPosition.x - gameContainer.position.x) * speed;
+      gameContainer.position.y += (gameContainerEndPosition.y - gameContainer.position.y) * speed;
+  }
+});
 
   // GAME UI
   //balance, time, game name, total bet
-
+  //spin button
   /**
    *  game menu button > 
    * pay table = how much you get paid!
@@ -114,9 +147,39 @@ async function makeGameScreen() {
   gameUIPanel.endFill();
   gameUIContainer.addChild(gameUIPanel);
   app.stage.addChild(gameUIContainer);
-  gameUIContainer.position.set((app.view.width / 2) - (gameUIPanelWidth / 2) , app.view.height - footerHeight);
 
-  //spin button
+  //start position
+  gameUIContainer.position.set((app.view.width / 2) - (gameUIPanelWidth / 2), app.view.height);
+  let gameUIContainerAnimationComplete = false;
+  //end position
+  const targetPosition = new PIXI.Point((app.view.width / 2) - (gameUIPanelWidth / 2) , app.view.height - footerHeight);
+  //gameUIContainer.position.set((app.view.width / 2) - (gameUIPanelWidth / 2) , app.view.height - footerHeight);
+
+  //animation 
+  app.ticker.add(() => {
+    if (!gameUIContainerAnimationComplete) {
+      // Calculate the distance between the current position and the target position
+      const distance = Math.sqrt(
+        Math.pow(gameUIContainer.position.x - targetPosition.x, 2) +
+        Math.pow(gameUIContainer.position.y - targetPosition.y, 2)
+      );
+
+      // Check if the container has reached the target position using a threshold
+      const threshold = 1; // Adjust the threshold as needed
+      if (distance <= threshold) {
+        // Animation complete, do something here
+        console.log("Animation complete!");
+        gameUIContainerAnimationComplete = true;
+        gameUIContainer.interactive = true;
+        return; // Exit the update loop
+      }
+
+      // Move the container towards the target position
+      const speed = 0.05; // Adjust the speed of the animation
+      gameUIContainer.position.x += (targetPosition.x - gameUIContainer.position.x) * speed;
+      gameUIContainer.position.y += (targetPosition.y - gameUIContainer.position.y) * speed;
+    }
+  });
 
   // title
   const headerContainer = new PIXI.Container();
