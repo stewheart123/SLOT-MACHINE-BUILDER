@@ -1,19 +1,18 @@
 /**
  * Use variables here to determine the desktop and mobile sizes
+ * Variables update when the page is
  *
  */
 
-console.log(window.innerWidth);
-
-let headerHeight = 100;
-let footerHeight = 100;
-let gameAreaPanelWidth = 600;
-let gameAreaPanelHeight = window.innerHeight - footerHeight;
-let gameContainerYOffset = 0;
-let titleFontSize = 50;
-let titleYOffset = 100;
-let headerContainerWidth = window.innerWidth / 2 - gameAreaPanelWidth;
-let gameUIPanelWidth = window.innerWidth / 2;
+let headerHeight;
+let footerHeight;
+let gameAreaPanelWidth;
+let gameAreaPanelHeight;
+let gameContainerYOffset;
+let titleFontSize;
+let titleYOffset;
+let headerContainerWidth;
+let gameUIPanelWidth;
 
 handleResize();
 
@@ -26,11 +25,13 @@ function handleResize() {
   titleFontSize = 50;
   titleYOffset = 100;
   headerContainerWidth = window.innerWidth / 2 - gameAreaPanelWidth;
-  gameUIPanelWidth = window.innerWidth / 2;
+  gameUIPanelWidth = 600;
 
   if (window.innerWidth < 768) {
     titleFontSize = 36;
-    gameUIPanelWidth = window.innerWidth;
+    gameAreaPanelWidth = window.innerWidth - 20;
+    gameUIPanelWidth = window.innerWidth - 20;
+    console.log(window.innerWidth - 20);
   }
   if (window.innerWidth < 1701) {
     gameContainerYOffset = 100;
