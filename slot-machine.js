@@ -48,11 +48,13 @@ async function makeLoadScreen() {
 }
 
 async function makeGameScreen() {
+
   //game variables:
   // Wait here until you get the assets
   // If the user spends enough time in the load screen by the time they reach the game screen
   // the assets are completely loaded and the promise resolves instantly!
   const loadScreenAssets = await PIXI.Assets.loadBundle("game-screen");
+  
   const maskBackground = new PIXI.Graphics();
   maskBackground.beginFill(0x000000);
   maskBackground.drawRect(0, 0, app.view.width, app.view.height);
@@ -100,6 +102,22 @@ async function makeGameScreen() {
   //gameContainer.position.y = gameContainerYOffset;
   gameContainer.position.y = 0 - gameContainer.height;
   app.stage.addChild(gameContainer);
+
+
+  //reel assembly - TODO : link up to a containter and instantiate the symbols into game area
+  const reelManager = new ReelManager(
+    [
+      loadScreenAssets.amber.textureCacheIds[0],
+      loadScreenAssets.diamond.textureCacheIds[0], 
+      loadScreenAssets.gold.textureCacheIds[0], 
+      loadScreenAssets.opal.textureCacheIds[0]
+    ],
+     4, 5 );
+  
+    console.log(reelManager.reelAssembly);    
+    console.log(reelManager.resetReels(gameContainer));
+
+    
 
   //end position
   const gameContainerEndPosition = new PIXI.Point(
@@ -173,9 +191,8 @@ async function makeGameScreen() {
     console.log('click');
     //open menu modal
     toggleModalClass('info-modal', 'is-hidden');
+    console.log(reelManager.resetReels());
   });
-
-  
 
   const spinWinBalanceContainer = new PIXI.Container();
   spinWinBalanceContainer.position.set(footerHeight + 10, 10);
