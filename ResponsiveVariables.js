@@ -13,6 +13,7 @@ let titleFontSize;
 let titleYOffset;
 let headerContainerWidth;
 let gameUIPanelWidth;
+let menuModalHeight;
 
 handleResize();
 
@@ -26,12 +27,12 @@ function handleResize() {
   titleYOffset = 100;
   headerContainerWidth = window.innerWidth / 2 - gameAreaPanelWidth;
   gameUIPanelWidth = 600;
+  menuModalHeight = gameUIPanelWidth;
 
   if (window.innerWidth < 768) {
     titleFontSize = 36;
     gameAreaPanelWidth = window.innerWidth - 20;
     gameUIPanelWidth = window.innerWidth - 20;
-    console.log(window.innerWidth - 20);
   }
   if (window.innerWidth < 1701) {
     gameContainerYOffset = 100;
