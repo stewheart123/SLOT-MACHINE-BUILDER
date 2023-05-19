@@ -38,19 +38,27 @@ class ReelManager {
       this.reelAssembly.push(tempReel);
     }
 
-    //replace this with logic for appending sprites
-    const idea = new PIXI.Graphics();
-    idea.lineStyle(2, 0xffffff, 4);
-    idea.beginFill(0x00ff00, 0.5);
-    idea.drawRect(0, 0, 500, 500);
-    idea.endFill();
+    // for loop that loops over contents in multidimensional array
+    for (let x = 0; x < this.amountOfReels; x++) {
+      const reelContainer = new PIXI.Container();
+      for (let y = 0; y < this.symbolsInReel; y++) {
+        let reelSymbol = new PIXI.Sprite();
+        reelSymbol.texture = this.reelAssembly[x][y].texture;
+        reelSymbol.width = containerToAppend.width / this.amountOfReels;
+        reelSymbol.height = containerToAppend.width / this.amountOfReels;
+        reelContainer.addChild(reelSymbol);
+        reelSymbol.position.set(
+          (y * containerToAppend.width) / this.amountOfReels,
+          (containerToAppend.width / this.amountOfReels) * x -
+            containerToAppend.width / this.amountOfReels
+        );
+      }
 
-    containerToAppend.addChild(idea);
+      containerToAppend.addChild(reelContainer);
+    }
 
-    return this.reelAssembly;
+    //TODO CONNECT FUNCTION TO SPIN BUTTON
+    //CREATE ANIMATION FOR REELS
   }
 }
 
-/**
- * replaces all boxes with new ones
- */

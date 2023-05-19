@@ -48,13 +48,20 @@ async function makeLoadScreen() {
 }
 
 async function makeGameScreen() {
-
   //game variables:
   // Wait here until you get the assets
   // If the user spends enough time in the load screen by the time they reach the game screen
   // the assets are completely loaded and the promise resolves instantly!
   const loadScreenAssets = await PIXI.Assets.loadBundle("game-screen");
-  
+  console.log(loadScreenAssets.amber);
+  // const idea = new PIXI.Sprite();
+  // idea.texture = loadScreenAssets.amber;
+  // idea.position.set(50,50);
+  // idea.width = 500;
+  // idea.height = 500;
+  // app.stage.addChild(idea);
+  // console.log(idea);
+
   const maskBackground = new PIXI.Graphics();
   maskBackground.beginFill(0x000000);
   maskBackground.drawRect(0, 0, app.view.width, app.view.height);
@@ -102,22 +109,6 @@ async function makeGameScreen() {
   //gameContainer.position.y = gameContainerYOffset;
   gameContainer.position.y = 0 - gameContainer.height;
   app.stage.addChild(gameContainer);
-
-
-  //reel assembly - TODO : link up to a containter and instantiate the symbols into game area
-  const reelManager = new ReelManager(
-    [
-      loadScreenAssets.amber.textureCacheIds[0],
-      loadScreenAssets.diamond.textureCacheIds[0], 
-      loadScreenAssets.gold.textureCacheIds[0], 
-      loadScreenAssets.opal.textureCacheIds[0]
-    ],
-     4, 5 );
-  
-    console.log(reelManager.reelAssembly);    
-    console.log(reelManager.resetReels(gameContainer));
-
-    
 
   //end position
   const gameContainerEndPosition = new PIXI.Point(
@@ -181,29 +172,29 @@ async function makeGameScreen() {
   const menuButton = new PIXI.Graphics();
   menuButton.beginFill(0x000000, 0.5);
   menuButton.lineStyle(2, 0xffffff, 4);
-  menuButton.drawRect(0,0, footerHeight,footerHeight);
+  menuButton.drawRect(0, 0, footerHeight, footerHeight);
   menuButton.endFill();
   gameUIPanel.addChild(menuButton);
   menuButton.interactive = true;
   menuButton.cursor = "pointer";
 
   menuButton.addListener("pointerdown", () => {
-    console.log('click');
+    console.log("click");
     //open menu modal
-    toggleModalClass('info-modal', 'is-hidden');
+    toggleModalClass("info-modal", "is-hidden");
     console.log(reelManager.resetReels());
   });
 
   const spinWinBalanceContainer = new PIXI.Container();
   spinWinBalanceContainer.position.set(footerHeight + 10, 10);
 
-  const spinsLeftText = new PIXI.Text("Spins :" , {
+  const spinsLeftText = new PIXI.Text("Spins :", {
     fontSize: 24,
     fill: 0xffffff,
     fontFamily: "Bitter",
   });
 
-  const winText = new PIXI.Text("Win :" , {
+  const winText = new PIXI.Text("Win :", {
     fontSize: 24,
     fill: 0xffffff,
     fontFamily: "Bitter",
@@ -280,6 +271,21 @@ async function makeGameScreen() {
   gameTitle.position.set(0, 0);
   headerContainer.addChild(gameTitle);
 
+  //reel assembly - TODO : link up to a containter and instantiate the symbols into game area
+  const reelManager = new ReelManager(
+    [
+      // loadScreenAssets.amber.textureCacheIds[0],
+      loadScreenAssets.amber,
+      loadScreenAssets.diamond,
+      loadScreenAssets.gold,
+      loadScreenAssets.opal,
+    ],
+    4,
+    5
+  );
+
+  reelManager.resetReels(gameContainer);
+
   // re-draw items on window resize
   window.addEventListener("resize", plotGraphics);
 
@@ -306,7 +312,6 @@ async function makeGameScreen() {
       maskBackground.beginFill(0x000000);
       maskBackground.drawRect(0, 0, app.view.width, app.view.height);
       maskBackground.endFill();
-      
 
       backgroundImage.position.set(app.view.width / 2, app.view.height / 2);
       gameContainer.width = gameAreaPanelWidth;
@@ -332,8 +337,8 @@ async function makeGameScreen() {
       menuButton.clear();
       menuButton.beginFill(0x000000, 0.5);
       menuButton.lineStyle(2, 0xffffff, 4);
-      menuButton.drawRect(0,0, footerHeight,footerHeight);
-      menuButton.endFill();      
+      menuButton.drawRect(0, 0, footerHeight, footerHeight);
+      menuButton.endFill();
     }
   }
   function toggleModalClass(elementId, className) {
