@@ -21,7 +21,11 @@ class ReelManager {
     }
   }
 
-  resetReels(containerToAppend) {
+  resetReels(containerToAppend, panelToRebuild) {
+    //not sure why both the panel and container need emptying
+    containerToAppend.removeChildren();
+    panelToRebuild.removeChildren();
+    containerToAppend.addChild(panelToRebuild);
     this.reelAssembly.length = 0;
 
     for (let i = 0; i < this.amountOfReels; i++) {
@@ -53,12 +57,26 @@ class ReelManager {
             containerToAppend.width / this.amountOfReels
         );
       }
-
       containerToAppend.addChild(reelContainer);
     }
 
-    //TODO CONNECT FUNCTION TO SPIN BUTTON
-    //CREATE ANIMATION FOR REELS
+    // TODO
+    /**
+     * SHIFT ARRAY BY 1, CREATE NEW ONE AT AS THE STARTING SYMBOL
+     * REDRAW THE SYMBOLS?
+     */
+  }
+
+  symbolSpinAnimation(symbol, shouldSpin) {
+    const initialYPos = symbol.y;
+    app.ticker.add(() => {
+      if (shouldSpin) {
+        symbol.y += 2.5;
+
+        if (symbol.y > initialYPos + symbol.height) {
+          symbol.y = initialYPos;
+        }
+      }
+    });
   }
 }
-

@@ -53,14 +53,6 @@ async function makeGameScreen() {
   // If the user spends enough time in the load screen by the time they reach the game screen
   // the assets are completely loaded and the promise resolves instantly!
   const loadScreenAssets = await PIXI.Assets.loadBundle("game-screen");
-  console.log(loadScreenAssets.amber);
-  // const idea = new PIXI.Sprite();
-  // idea.texture = loadScreenAssets.amber;
-  // idea.position.set(50,50);
-  // idea.width = 500;
-  // idea.height = 500;
-  // app.stage.addChild(idea);
-  // console.log(idea);
 
   const maskBackground = new PIXI.Graphics();
   maskBackground.beginFill(0x000000);
@@ -169,6 +161,22 @@ async function makeGameScreen() {
   spinButton.endFill();
   gameUIPanel.addChild(spinButton);
 
+  spinButton.interactive = true;
+  spinButton.cursor = "pointer";
+
+  spinButton.addListener("pointerdown", () => {
+    console.log("spin");
+
+    for (let x = 1; x < reelManager.amountOfReels + 1; x++) {
+      for (let y = 0; y < reelManager.symbolsInReel; y++) {
+        reelManager.symbolSpinAnimation(
+          gameContainer.children[x].children[y],
+          true
+        );
+      }
+    }
+  });
+
   const menuButton = new PIXI.Graphics();
   menuButton.beginFill(0x000000, 0.5);
   menuButton.lineStyle(2, 0xffffff, 4);
@@ -182,7 +190,6 @@ async function makeGameScreen() {
     console.log("click");
     //open menu modal
     toggleModalClass("info-modal", "is-hidden");
-    console.log(reelManager.resetReels());
   });
 
   const spinWinBalanceContainer = new PIXI.Container();
@@ -284,7 +291,7 @@ async function makeGameScreen() {
     5
   );
 
-  reelManager.resetReels(gameContainer);
+  reelManager.resetReels(gameContainer, backgroundPanel);
 
   // re-draw items on window resize
   window.addEventListener("resize", plotGraphics);
