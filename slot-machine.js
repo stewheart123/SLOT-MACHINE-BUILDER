@@ -164,17 +164,54 @@ async function makeGameScreen() {
   spinButton.interactive = true;
   spinButton.cursor = "pointer";
 
-  spinButton.addListener("pointerdown", () => {
-    console.log("spin");
+  
 
-    for (let x = 1; x < reelManager.amountOfReels + 1; x++) {
-      for (let y = 0; y < reelManager.symbolsInReel; y++) {
-        reelManager.symbolSpinAnimation(
-          gameContainer.children[x].children[y],
-          true
-        );
-      }
+  spinButton.addListener("pointerdown", () => {
+
+//shift array
+
+//redraw array
+
+    // KEEP THIS
+    // for (let x = 1; x < reelManager.amountOfReels + 1; x++) {
+    //   for (let y = 0; y < reelManager.symbolsInReel; y++) {
+    //     reelManager.symbolSpinAnimation(
+    //       gameContainer.children[x].children[y],
+    //       true,
+    //       x - 1,y
+    //     );
+    //   }
+    // }
+
+    
+
+    for(let x = 1; x < reelManager.amountOfReels + 1; x++ ) {
+      // reelManager.animateReelContainer( gameContainer.children[x], 200);
     }
+    reelManager.animateReelContainer( gameContainer.children[1], gameContainer.width / (reelManager.amountOfReels + 1), true);
+    // reelManager.animateReelContainer( gameContainer.children[2], gameContainer.width / (reelManager.amountOfReels + 1) ,false);
+    // reelManager.animateReelContainer( gameContainer.children[3], gameContainer.width / (reelManager.amountOfReels + 1),false);
+    // reelManager.animateReelContainer( gameContainer.children[4], gameContainer.width / (reelManager.amountOfReels + 1), true);
+    
+    
+
+    // TESTING - UPDATE REEL ASSEMBLY TO SHIFT BY 1, PLUS CREATE NEW AT INDEX 0
+    // reelManager.resetReels(gameContainer, backgroundPanel);
+    
+    // for redrawing the reels...
+//reelManager.shiftReelAssembly();
+
+    // //need to find where to call the animation for each symbol...
+    // for (let x = 1; x < reelManager.amountOfReels + 1; x++) {
+    //   for (let y = 0; y < reelManager.symbolsInReel; y++) {
+    //     reelManager.redrawReels(
+    //       gameContainer.children[x].children[y],
+    //       x -1, y
+    //       );
+    //     }
+    //   }
+
+    
   });
 
   const menuButton = new PIXI.Graphics();
@@ -287,8 +324,8 @@ async function makeGameScreen() {
       loadScreenAssets.gold,
       loadScreenAssets.opal,
     ],
-    4,
-    5
+    5,
+    4
   );
 
   reelManager.resetReels(gameContainer, backgroundPanel);
