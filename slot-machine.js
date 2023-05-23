@@ -165,14 +165,12 @@ async function makeGameScreen() {
   spinButton.cursor = "pointer";
 
   spinButton.addListener("pointerdown", () => {
-    console.log("glick");
     spin();
+
   });
 
   function spin() {
     spinButton.interactive = false;
-    //  add state - spiining / stopped
-    //TODO test to see if final value matches the reelAssembly values..
 
     //function to check win lines
     //calculate wins based on differning values in win table.

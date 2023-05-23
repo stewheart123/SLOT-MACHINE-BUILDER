@@ -5,6 +5,98 @@ class ReelManager {
     this.reel = [];
     this.amountOfReels = amountOfReels;
     this.symbolsInReel = symbolsInReel;
+    this.winLines = [
+      {
+        plot: [
+          [0, 1],
+          [1, 1],
+          [2, 1],
+          [3, 1],
+        ],
+        descripton: "top horizontal",
+      },
+      {
+        plot: [
+          [0, 2],
+          [1, 2],
+          [2, 2],
+          [3, 2],
+        ],
+        descripton: "second horizontal",
+      },
+      {
+        plot: [
+          [0, 3],
+          [1, 3],
+          [2, 3],
+          [3, 3],
+        ],
+        descripton: "third horizontal",
+      },
+      {
+        plot: [
+          [0, 4],
+          [1, 4],
+          [2, 4],
+          [3, 4],
+        ],
+        descripton: "bottom horizontal",
+      },
+      {
+        plot: [
+          [0, 1],
+          [1, 2],
+          [2, 3],
+          [3, 4],
+        ],
+        descripton: "top bottom diagonal",
+      },
+      {
+        plot: [
+          [0, 4],
+          [1, 3],
+          [2, 2],
+          [3, 1],
+        ],
+        descripton: "bottom top diagonal",
+      },
+      {
+        plot: [
+          [0, 1],
+          [0, 2],
+          [0, 3],
+          [0, 4],
+        ],
+        descripton: "first vertical",
+      },
+      {
+        plot: [
+          [1, 1],
+          [1, 2],
+          [1, 3],
+          [1, 4],
+        ],
+        descripton: "second vertical",
+      },
+      {
+        plot: [
+          [2, 1],
+          [2, 2],
+          [2, 3],
+          [2, 4],
+        ],
+        descripton: "third vertical",
+      },
+      {
+        plot: [
+          [3, 1],
+          [3, 2],
+          [3, 3],
+          [3, 4],
+        ],
+        descripton: "fourth vertical",
+      },
+    ];
     //sets random numer in each reel
     for (let y = 0; y < amountOfReels; y++) {
       const tempReel = [];
@@ -100,10 +192,71 @@ class ReelManager {
         reelTicker.stop();
         count = 0;
         if (reelToShift == 0) {
+          this.checkAllWinLines();
           buttonState.interactive = true;
         }
         return true;
       }
     }, 60);
+  }
+
+  checkWinLine(inputArray, lineDescription) {
+    /**
+     * look at contents of array, if 3 or 4 in a row,
+     * return line desription - used to identify the win line in a string message,
+     * multiply each of the values against the reel assembly values to get the total
+     */
+
+    if (
+      inputArray[0] === inputArray[1] &&
+      inputArray[1] === inputArray[2] &&
+      inputArray[2] === inputArray[3]
+    ) {
+      return ["FOUR IN A ROW! ", lineDescription, true];
+    }
+    if (
+      inputArray[0] !== inputArray[1] &&
+      inputArray[1] === inputArray[2] &&
+      inputArray[2] === inputArray[3]
+    ) {
+      return ["THREE IN A ROW! ", lineDescription, true];
+    }
+    if (
+      inputArray[0] === inputArray[1] &&
+      inputArray[1] === inputArray[2] &&
+      inputArray[2] !== inputArray[3]
+    ) {
+      return ["THREE IN A ROW! ", lineDescription, true];
+    }
+
+    return ["NO WIN", "no win", false];
+  }
+
+  checkAllWinLines() {
+    console.clear();
+    this.winLines.forEach((element) => {
+      let resultArray = [];
+      for (let x = 0; x < element.plot.length; x++) {
+        resultArray.push(
+          this.reelAssembly[element.plot[x][0]][element.plot[x][1]].value
+        );
+      }
+      let result = this.checkWinLine(resultArray, element.descripton);
+      if (result[2]) {
+        /**
+         * TODO queue up rall winning results and trigger an overlay showing
+         *
+         * gather the values of the different stones
+         * show score
+         * show all wins
+         * 
+         * shift all reels upwards by 1 symbolheight
+         * add mask area to the reels - waringing could throw off the array
+         * pointing at the container.
+         *  */
+
+        console.log(result[0] + " " + result[1]);
+      }
+    });
   }
 }
