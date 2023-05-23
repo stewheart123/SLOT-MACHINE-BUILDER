@@ -86,7 +86,6 @@ class ReelManager {
         this.shiftReelValues(reelToShift);
         for (let y = 0; y < this.symbolsInReel; y++) {
           this.redrawReel(containerToAnimate.children[y], reelToShift, y);
-          console.log("reached  " + count);
         }
       }
     });

@@ -118,7 +118,6 @@ async function makeGameScreen() {
       const threshold = 1; // Adjust the threshold as needed
       if (distance <= threshold) {
         // Animation complete, do something here
-        console.log("Animation complete!");
         gameContainerAnimationComplete = true;
         return; // Exit the update loop
       }
@@ -189,7 +188,7 @@ async function makeGameScreen() {
   menuButton.cursor = "pointer";
 
   menuButton.addListener("pointerdown", () => {
-    console.log("click");
+    
     //open menu modal
     toggleModalClass("info-modal", "is-hidden");
   });
@@ -247,7 +246,6 @@ async function makeGameScreen() {
       const threshold = 1; // Adjust the threshold as needed
       if (distance <= threshold) {
         // Animation complete, do something here
-        console.log("Animation complete!");
         gameUIContainerAnimationComplete = true;
         gameUIContainer.interactive = true;
         return; // Exit the update loop
