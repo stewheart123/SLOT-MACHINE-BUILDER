@@ -6,6 +6,7 @@
  */
 
 const utility = new Utilities();
+let isSpinning = false;
 
 let app = new PIXI.Application({
   width: window.innerWidth,
@@ -163,20 +164,44 @@ async function makeGameScreen() {
   spinButton.interactive = true;
   spinButton.cursor = "pointer";
 
-  
-
   spinButton.addListener("pointerdown", () => {
-
-    // TODO : add a start and stop feature based on how many spins each reel has completed
-    // change so that they start at slightly different times, different speeds?
-
-    // add state - spiining / stopped
-    //test to see if final value matches the reelAssembly values..
-    reelManager.animateReelContainer( gameContainer.children[1], gameContainer.width / (reelManager.amountOfReels + 1),  0);
-    reelManager.animateReelContainer( gameContainer.children[2], gameContainer.width / (reelManager.amountOfReels + 1) ,1);
-    reelManager.animateReelContainer( gameContainer.children[3], gameContainer.width / (reelManager.amountOfReels + 1),2);
-    reelManager.animateReelContainer( gameContainer.children[4], gameContainer.width / (reelManager.amountOfReels + 1), 3);    
+    console.log("glick");
+    spin();
   });
+
+  function spin() {
+    spinButton.interactive = false;
+    //  add state - spiining / stopped
+    //TODO test to see if final value matches the reelAssembly values..
+
+    //function to check win lines
+    //calculate wins based on differning values in win table.
+    //re-format architecture so all reel actions live inside the reel class
+    reelManager.animateReelContainer(
+      gameContainer.children[1],
+      gameContainer.width / (reelManager.amountOfReels + 1),
+      0,
+      spinButton
+    );
+    reelManager.animateReelContainer(
+      gameContainer.children[2],
+      gameContainer.width / (reelManager.amountOfReels + 1),
+      1,
+      spinButton
+    );
+    reelManager.animateReelContainer(
+      gameContainer.children[3],
+      gameContainer.width / (reelManager.amountOfReels + 1),
+      2,
+      spinButton
+    );
+    reelManager.animateReelContainer(
+      gameContainer.children[4],
+      gameContainer.width / (reelManager.amountOfReels + 1),
+      3,
+      spinButton
+    );
+  }
 
   const menuButton = new PIXI.Graphics();
   menuButton.beginFill(0x000000, 0.5);
@@ -188,7 +213,6 @@ async function makeGameScreen() {
   menuButton.cursor = "pointer";
 
   menuButton.addListener("pointerdown", () => {
-    
     //open menu modal
     toggleModalClass("info-modal", "is-hidden");
   });

@@ -75,11 +75,19 @@ class ReelManager {
   }
 
   // animates only 1 reel
-  animateReelContainer(containerToAnimate, symbolHeight, reelToShift) {
+  //add function that check all reels are either started or stopped..
+  animateReelContainer(
+    containerToAnimate,
+    symbolHeight,
+    reelToShift,
+    buttonState
+  ) {
+    const reelTicker = new PIXI.Ticker();
     const initalPos = containerToAnimate.y;
     let count = 0;
-    app.ticker.add(() => {
-      containerToAnimate.y += 5; // speed
+    reelTicker.start();
+    reelTicker.add(() => {
+      containerToAnimate.y += 1 * (reelToShift * 2) + 10; // distance to move
       if (containerToAnimate.y > initalPos + symbolHeight) {
         count++;
         containerToAnimate.y = initalPos;
@@ -88,7 +96,14 @@ class ReelManager {
           this.redrawReel(containerToAnimate.children[y], reelToShift, y);
         }
       }
-    });
+      if (count === 10) {
+        reelTicker.stop();
+        count = 0;
+        if (reelToShift == 0) {
+          buttonState.interactive = true;
+        }
+        return true;
+      }
+    }, 60);
   }
-
 }
