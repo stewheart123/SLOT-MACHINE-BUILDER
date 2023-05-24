@@ -164,12 +164,9 @@ async function makeGameScreen() {
   spinButton.interactive = true;
   spinButton.cursor = "pointer";
 
-  spinButton.addListener("pointerdown", () => {
-    spin();
+  
 
-  });
-
-  function spin() {
+  const spin = () => {
     spinButton.interactive = false;
 
     //function to check win lines
@@ -179,28 +176,29 @@ async function makeGameScreen() {
       gameContainer.children[1],
       gameContainer.width / (reelManager.amountOfReels + 1),
       0,
-      spinButton
+       () => {
+        reelManager.checkAllWinLines();
+        spinButton.interactive = true;
+      }
     );
     reelManager.animateReelContainer(
       gameContainer.children[2],
       gameContainer.width / (reelManager.amountOfReels + 1),
-      1,
-      spinButton
+      1
     );
     reelManager.animateReelContainer(
       gameContainer.children[3],
       gameContainer.width / (reelManager.amountOfReels + 1),
-      2,
-      spinButton
+      2
     );
     reelManager.animateReelContainer(
       gameContainer.children[4],
       gameContainer.width / (reelManager.amountOfReels + 1),
-      3,
-      spinButton
+      3
     );
   }
 
+  spinButton.addListener("pointerdown", spin);
   const menuButton = new PIXI.Graphics();
   menuButton.beginFill(0x000000, 0.5);
   menuButton.lineStyle(2, 0xffffff, 4);

@@ -172,7 +172,7 @@ class ReelManager {
     containerToAnimate,
     symbolHeight,
     reelToShift,
-    buttonState
+    callback
   ) {
     const reelTicker = new PIXI.Ticker();
     const initalPos = containerToAnimate.y;
@@ -191,9 +191,8 @@ class ReelManager {
       if (count === 10) {
         reelTicker.stop();
         count = 0;
-        if (reelToShift == 0) {
-          this.checkAllWinLines();
-          buttonState.interactive = true;
+        if (callback) {
+          callback();
         }
         return true;
       }
@@ -249,7 +248,7 @@ class ReelManager {
          * gather the values of the different stones
          * show score
          * show all wins
-         * 
+         *
          * shift all reels upwards by 1 symbolheight
          * add mask area to the reels - waringing could throw off the array
          * pointing at the container.
