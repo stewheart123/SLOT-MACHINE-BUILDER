@@ -23,7 +23,6 @@ class GameState {
         return this.bankClass.balance / this.spinPrice;
     }
     checkCanSpin() {
-        console.log('check can spin');
         if(this.remainingSpins > 0) {
             this.playControlsClass.setPlayReady();
         }

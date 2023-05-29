@@ -150,10 +150,25 @@ class ReelMechanism {
         reelSymbol.width = containerToAppend.width / (this.amountOfReels + 1);
         reelSymbol.height = containerToAppend.width / (this.amountOfReels + 1);
         reelContainer.addChild(reelSymbol);
-        reelSymbol.position.set(reelSymbol.width * i, reelSymbol.height * y);
+        reelSymbol.position.set(reelSymbol.width * i, (reelSymbol.height * y) - reelSymbol.height);
       }
       containerToAppend.addChild(reelContainer);
     }
+    
+    //refine these values to be dynamic
+    const maskWidth = containerToAppend.width;
+    const maskHeight = window.innerHeight - (headerHeight + footerHeight) ;
+    console.log(maskHeight);
+    console.log(containerToAppend);
+
+    const maskShape = new PIXI.Graphics();
+    maskShape.beginFill(0xffffff);
+    
+    maskShape.drawRect((window.innerWidth / 2) - (maskWidth  / 2), headerHeight + 4, maskWidth,maskHeight);
+    maskShape.endFill();
+    const mask = new PIXI.MaskData(maskShape, 'scissor', 0,0);
+    containerToAppend.mask = mask;
+    
   }
   //works on one reel only
   shiftReelValues(reelToShift) {
@@ -238,7 +253,7 @@ class ReelMechanism {
   }
 
   checkAllWinLines() {
-    //console.clear();
+    console.clear();
     this.winLines.forEach((element) => {
       let resultArray = [];
       for (let x = 0; x < element.plot.length; x++) {
@@ -255,9 +270,6 @@ class ReelMechanism {
          * show score
          * show all wins
          *
-         * shift all reels upwards by 1 symbolheight
-         * add mask area to the reels - waringing could throw off the array
-         * pointing at the container.
          *  */
 
         console.log(result[0] + " " + result[1]);
