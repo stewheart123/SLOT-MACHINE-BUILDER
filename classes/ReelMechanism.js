@@ -157,14 +157,15 @@ class ReelMechanism {
     
     //refine these values to be dynamic
     const maskWidth = containerToAppend.width;
-    const maskHeight = window.innerHeight - (headerHeight + footerHeight) ;
-    console.log(maskHeight);
+    //const maskHeight = window.innerHeight - (headerHeight + footerHeight) ;
+
+    console.log(headerHeight);
     console.log(containerToAppend);
 
     const maskShape = new PIXI.Graphics();
     maskShape.beginFill(0xffffff);
     
-    maskShape.drawRect((window.innerWidth / 2) - (maskWidth  / 2), headerHeight - 2, maskWidth,maskHeight + 2);
+    maskShape.drawRect((window.innerWidth / 2) - (maskWidth  / 2), maskYPos - 2, maskWidth,maskHeight + 2);
     maskShape.endFill();
     const mask = new PIXI.MaskData(maskShape, 'scissor', 0,0);
     containerToAppend.mask = mask;

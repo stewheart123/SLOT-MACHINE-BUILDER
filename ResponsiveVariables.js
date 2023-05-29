@@ -14,12 +14,16 @@ let titleYOffset;
 let headerContainerWidth;
 let gameUIPanelWidth;
 let menuModalHeight;
+let maskHeight;
+let maskYPos;
 
 handleResize();
 
 function handleResize() {
   headerHeight = 100;
   footerHeight = 100;
+  maskHeight = window.innerHeight - footerHeight;
+  maskYPos = 0;
   gameAreaPanelWidth = 600;
   gameAreaPanelHeight = window.innerHeight - footerHeight;
   gameContainerYOffset = 0;
@@ -39,6 +43,8 @@ function handleResize() {
     gameAreaPanelHeight = window.innerHeight - (footerHeight + headerHeight);
     headerContainerWidth = window.innerWidth / 2;
     titleYOffset = headerHeight / 2;
+    maskHeight = window.innerHeight - (footerHeight + headerHeight);
+    maskYPos = 100;
   }
 }
 
