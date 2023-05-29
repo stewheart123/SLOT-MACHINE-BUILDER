@@ -164,7 +164,7 @@ class ReelMechanism {
     const maskShape = new PIXI.Graphics();
     maskShape.beginFill(0xffffff);
     
-    maskShape.drawRect((window.innerWidth / 2) - (maskWidth  / 2), headerHeight + 4, maskWidth,maskHeight);
+    maskShape.drawRect((window.innerWidth / 2) - (maskWidth  / 2), headerHeight - 2, maskWidth,maskHeight + 2);
     maskShape.endFill();
     const mask = new PIXI.MaskData(maskShape, 'scissor', 0,0);
     containerToAppend.mask = mask;
