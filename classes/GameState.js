@@ -5,13 +5,15 @@
  * looks at the bank balance to determine if able to continue
  */
 class GameState {
-    constructor(spinPrice, bankClass) {
+    constructor(spinPrice, bankClass, playControlsClass) {
         this.state = null;
         this.remainingSpins = null;
         this.spinPrice = spinPrice; 
         this.bankClass = bankClass;
         this.remainingSpins = this.determineSpinsLeft();
         this.checkCanSpin = this.checkCanSpin;
+        this.playControlsClass = playControlsClass;
+        this.gameInformationClass = null;
     }
     setSpinning(spinDescription) {
         this.state = spinDescription;
@@ -23,17 +25,18 @@ class GameState {
     checkCanSpin() {
         console.log('check can spin');
         if(this.remainingSpins > 0) {
-            return(true);
+            this.playControlsClass.setPlayReady();
         }
         else {
-            return(false);
+            this.playControlsClass.blockPlay();
         }
     }
-    //update bank balance
-    //update remaining spins
-    //
-
-
-    
+    deductNextSpin() {
+        this.bankClass.balance -= this.spinPrice;
+        //update the UI
+        this.bankClass.balance -= this.spinPrice;
+        this.remainingSpins = this.determineSpinsLeft();
+        this.gameInformationClass.updateGameInfo();
+    }   
     
 }

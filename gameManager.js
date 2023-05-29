@@ -30,31 +30,24 @@ sceneLoader.makeGameScreen().then(() => {
   //add assets to animate for wins
   const animator = new Animator();
   animator.animateGameContainer(sceneLoader.gameUIContainer);
+  const bank = new Bank(1000);
   const playControls = new PlayControls(
     sceneLoader.spinButton,
     reelManager,
     sceneLoader.gameContainer
   );
-  const bank = new Bank(1000, null);
-  const gameState = new GameState(50, bank);
+  const gameState = new GameState(50, bank, playControls);
+  playControls.gameState = gameState;
   const gameInformation = new GameInformation(
     sceneLoader.gameUIPanel,
     bank,
     gameState);
+    gameState.gameInformationClass = gameInformation;
   gameInformation.setupGameInfo();
   gameInformation.updateGameInfo();
 
-
-  //create Game Loop - while checkCanSpin() {}
-  if(gameState.checkCanSpin()) {
-    playControls.setPlayReady();
-  }
-  else {
-    playControls.blockPlay();
-  }
-
-
-
+  // Game Loop
+  gameState.checkCanSpin();
   //if bank state === canPayout
 
   //if game state !== isSpinning

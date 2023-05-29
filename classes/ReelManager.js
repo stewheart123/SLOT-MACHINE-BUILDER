@@ -239,7 +239,7 @@ class ReelManager {
   }
 
   checkAllWinLines() {
-    console.clear();
+    //console.clear();
     this.winLines.forEach((element) => {
       let resultArray = [];
       for (let x = 0; x < element.plot.length; x++) {

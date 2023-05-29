@@ -7,6 +7,9 @@ class PlayControls {
     this.spinButton = spinButton;
     this.reelManager = reelManager;
     this.gameContainer = gameContainer;
+    this.gameState = null;
+    this.gameInformationClass = null;
+
     this.spinButton.addListener("pointerdown", this.spin.bind(this));
     this.playActive = false;
   }
@@ -19,11 +22,13 @@ class PlayControls {
     this.playActive = false;
     this.spinButton.interactive = false;
   }
+  test(){
+    console.log("TEST CALLBACK");
+  }
 
   spin() {
-    console.log(this.gameContainer);
     if (this.playActive) {
-
+      this.gameState.deductNextSpin();
       this.spinButton.interactive = false;
       //function to check win lines
       //calculate wins based on differning values in win table.
@@ -35,6 +40,7 @@ class PlayControls {
         () => {
           this.reelManager.checkAllWinLines();
           this.spinButton.interactive = true;
+          this.gameState.checkCanSpin();
         }
       );
       this.reelManager.animateReelContainer(
@@ -47,11 +53,12 @@ class PlayControls {
         this.gameContainer.width / (this.reelManager.amountOfReels + 1),
         2
       );
-      this.reelManager.animateReelContainer(
+       this.reelManager.animateReelContainer(
         this.gameContainer.children[4],
         this.gameContainer.width / (this.reelManager.amountOfReels + 1),
         3
       );
     }
+    
   }
 }
