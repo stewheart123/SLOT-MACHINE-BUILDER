@@ -1,3 +1,7 @@
+/**
+ * Takes the player buttons and connects them to the reels
+ * Needs to know where the reels are appended to in the app
+ */
 class PlayControls {
   constructor(spinButton, reelManager, gameContainer) {
     this.spinButton = spinButton;
@@ -6,12 +10,12 @@ class PlayControls {
     this.spinButton.addListener("pointerdown", this.spin.bind(this));
     this.playActive = false;
   }
-  setPlayActive() {
+  setPlayReady() {
     this.playActive = true;
     this.spinButton.interactive = true;
     this.spinButton.cursor = "pointer"; 
   }
-  setPlayFalse() {
+  blockPlay() {
     this.playActive = false;
     this.spinButton.interactive = false;
   }
@@ -19,6 +23,7 @@ class PlayControls {
   spin() {
     console.log(this.gameContainer);
     if (this.playActive) {
+
       this.spinButton.interactive = false;
       //function to check win lines
       //calculate wins based on differning values in win table.

@@ -1,7 +1,6 @@
 /**
  * Useful tools and methods for calculating dimensions
  *  and placing markers on the screen
- *
  */
 class Utilities {
   autoRatioHeight(originalWidth, originalHeight, targetWidth) {

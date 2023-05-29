@@ -1,3 +1,10 @@
+/**
+ * Should rename to ReelMechanism?
+ * sets up the symbol types, amount of reels and amount of symbols on a reel
+ * animates the reel
+ * defines the win lines
+ * 
+ */
 class ReelManager {
   constructor(reelTextures, symbolsInReel, amountOfReels) {
     this.reelAssembly = [];

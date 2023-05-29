@@ -1,6 +1,8 @@
+/**
+ * An intro animation that moves the game assets into the main scene
+ */
 class Animator {
   //start position
-
   animateGameContainer(gameUIContainer) {
     gameUIContainer.position.set(
       app.view.width / 2 - gameUIPanelWidth / 2,
