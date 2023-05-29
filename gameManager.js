@@ -11,7 +11,7 @@ assetLoader.assetsAndLoadingScreen();
 sceneLoader.makeGameScreen().then(() => {
   // to abstract this further, sceneLoader can return an array of items
   //called reel symbols...
-  const reelManager = new ReelManager(
+  const reelMechanism = new ReelMechanism(
     [
       sceneLoader.gameScreenAssets.amber,
       sceneLoader.gameScreenAssets.diamond,
@@ -22,7 +22,7 @@ sceneLoader.makeGameScreen().then(() => {
     4
   );
 
-  reelManager.resetReels(
+  reelMechanism.resetReels(
     sceneLoader.gameContainer,
     sceneLoader.backgroundPanel
   );
@@ -33,7 +33,7 @@ sceneLoader.makeGameScreen().then(() => {
   const bank = new Bank(1000);
   const playControls = new PlayControls(
     sceneLoader.spinButton,
-    reelManager,
+    reelMechanism,
     sceneLoader.gameContainer
   );
   const gameState = new GameState(50, bank, playControls);

@@ -3,9 +3,9 @@
  * Needs to know where the reels are appended to in the app
  */
 class PlayControls {
-  constructor(spinButton, reelManager, gameContainer) {
+  constructor(spinButton, ReelMechanism, gameContainer) {
     this.spinButton = spinButton;
-    this.reelManager = reelManager;
+    this.ReelMechanism = ReelMechanism;
     this.gameContainer = gameContainer;
     this.gameState = null;
     this.gameInformationClass = null;
@@ -33,29 +33,29 @@ class PlayControls {
       //function to check win lines
       //calculate wins based on differning values in win table.
       //re-format architecture so all reel actions live inside the reel class
-      this.reelManager.animateReelContainer(
+      this.ReelMechanism.animateReelContainer(
         this.gameContainer.children[1],
-        this.gameContainer.width / (this.reelManager.amountOfReels + 1),
+        this.gameContainer.width / (this.ReelMechanism.amountOfReels + 1),
         0,
         () => {
-          this.reelManager.checkAllWinLines();
+          this.ReelMechanism.checkAllWinLines();
           this.spinButton.interactive = true;
           this.gameState.checkCanSpin();
         }
       );
-      this.reelManager.animateReelContainer(
+      this.ReelMechanism.animateReelContainer(
         this.gameContainer.children[2],
-        this.gameContainer.width / (this.reelManager.amountOfReels + 1),
+        this.gameContainer.width / (this.ReelMechanism.amountOfReels + 1),
         1
       );
-      this.reelManager.animateReelContainer(
+      this.ReelMechanism.animateReelContainer(
         this.gameContainer.children[3],
-        this.gameContainer.width / (this.reelManager.amountOfReels + 1),
+        this.gameContainer.width / (this.ReelMechanism.amountOfReels + 1),
         2
       );
-       this.reelManager.animateReelContainer(
+       this.ReelMechanism.animateReelContainer(
         this.gameContainer.children[4],
-        this.gameContainer.width / (this.reelManager.amountOfReels + 1),
+        this.gameContainer.width / (this.ReelMechanism.amountOfReels + 1),
         3
       );
     }
