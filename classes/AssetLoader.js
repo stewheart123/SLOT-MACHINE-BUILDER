@@ -26,8 +26,6 @@ class AssetLoader {
     app.stage.addChild(loadingContainer);
   }
   
-
-
   async assetsAndLoadingScreen() {
     const assetManifest = {
       bundles: assetBundles, // this is object from AssetManifest.js

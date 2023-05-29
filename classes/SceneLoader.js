@@ -6,6 +6,7 @@ class SceneLoader {
     this.gameContainer = new PIXI.Container();
     this.backgroundPanel = new PIXI.Graphics();
     this.gameScreenAssets = null;
+    this.spinButton = new PIXI.Graphics();
   }
 
 async makeGameScreen() {
@@ -14,7 +15,6 @@ async makeGameScreen() {
     // Wait here until you get the assets
     // If the user spends enough time in the load screen by the time they reach the game screen
     // the assets are completely loaded and the promise resolves instantly!
-    console.log('before');
     this.gameScreenAssets = await PIXI.Assets.loadBundle("game-screen");
     const maskBackground = new PIXI.Graphics();
     maskBackground.beginFill(0x000000);
@@ -113,23 +113,20 @@ async makeGameScreen() {
      this.gameUIContainer.addChild(gameUIPanel);
     app.stage.addChild(this.gameUIContainer);
   
-    const spinButton = new PIXI.Graphics();
-    spinButton.beginFill(0x000000, 0.5);
-    spinButton.lineStyle(2, 0xffffff, 4);
-    spinButton.drawCircle(gameUIPanel.width - 50, 50, 50);
-    spinButton.endFill();
-    gameUIPanel.addChild(spinButton);
+    
+    this.spinButton.beginFill(0x000000, 0.5);
+    this.spinButton.lineStyle(2, 0xffffff, 4);
+    this.spinButton.drawCircle(gameUIPanel.width - 50, 50, 50);
+    this.spinButton.endFill();
+    gameUIPanel.addChild(this.spinButton);
   
-    // spinButton.interactive = true;
-    // spinButton.cursor = "pointer";
-  
-      
+
   
     // title
     const headerContainer = new PIXI.Container();
     app.stage.addChild(headerContainer);
   
-    const gameTitle = new PIXI.Text("Slot Machine Builder", {
+    const gameTitle = new PIXI.Text("v2", {
       fontSize: titleFontSize,
       fill: 0xffffff,
       fontFamily: "Darumadrop One",
@@ -142,9 +139,7 @@ async makeGameScreen() {
     headerContainer.position.set(headerContainerWidth, titleYOffset);
     gameTitle.position.set(0, 0);
     headerContainer.addChild(gameTitle);
-  
     
-  
     // re-draw items on window resize
     window.addEventListener("resize", plotGraphics);
   
@@ -187,11 +182,11 @@ async makeGameScreen() {
         );
         headerContainer.position.set(headerContainerWidth, titleYOffset);
   
-        spinButton.clear();
-        spinButton.beginFill(0x000000, 0.5);
-        spinButton.lineStyle(2, 0xffffff, 4);
-        spinButton.drawCircle(gameUIPanel.width - 54, 50, 50);
-        spinButton.endFill();
+        this.spinButton.clear();
+        this.spinButton.beginFill(0x000000, 0.5);
+        this.spinButton.lineStyle(2, 0xffffff, 4);
+        this.spinButton.drawCircle(gameUIPanel.width - 54, 50, 50);
+        this.spinButton.endFill();
   
         menuButton.clear();
         menuButton.beginFill(0x000000, 0.5);
@@ -206,5 +201,6 @@ async makeGameScreen() {
         element.classList.toggle(className);
       }
     }
-  return(this.gameScreenAssets);};
+//  return(this.gameScreenAssets);
+};
 }

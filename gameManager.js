@@ -4,14 +4,16 @@ const utility = new Utilities();
 //load all assets
 //load loading screen
 const assetLoader = new AssetLoader();
-//load main game
 const sceneLoader = new SceneLoader();
 assetLoader.assetsAndLoadingScreen();
-console.log("A");
+//waits on assets to load before running sychronous activity
+//load main game
 sceneLoader
   .makeGameScreen()
   .then(() => {
-    console.log("B");
+   
+    // to abstract this further, sceneLoader can return an array of items
+    //called reel symbols...
     const reelManager = new ReelManager(
       [
         sceneLoader.gameScreenAssets.amber,
@@ -23,16 +25,31 @@ sceneLoader
       4
     );
     console.log(reelManager);
+
     reelManager.resetReels(
       sceneLoader.gameContainer,
       sceneLoader.backgroundPanel
     );
-  })
-  .then(() => {
-    console.log("C");
+
     const animator = new Animator();
     animator.animateGameContainer(sceneLoader.gameUIContainer);
+   //console.log(sceneLoader.gameContainer);
+
+    const playControls = new PlayControls(sceneLoader.spinButton,reelManager, sceneLoader.gameContainer);
+  
+    playControls.setPlayActive();
+
+    //logic - set game state, 
+    // if check gameState === ready
+
+    //if game state equals === no funds
+
+
+    //if game state === canPayout
+
+
   });
+  
 
 //animator
 //animate elements into main game
@@ -55,39 +72,9 @@ sceneLoader
 //menu button
 //
 
-// const spin = () => {
-//     spinButton.interactive = false;
 
-//     //function to check win lines
-//     //calculate wins based on differning values in win table.
-//     //re-format architecture so all reel actions live inside the reel class
-//     reelManager.animateReelContainer(
-//       gameContainer.children[1],
-//       gameContainer.width / (reelManager.amountOfReels + 1),
-//       0,
-//        () => {
-//         reelManager.checkAllWinLines();
-//         spinButton.interactive = true;
-//       }
-//     );
-//     reelManager.animateReelContainer(
-//       gameContainer.children[2],
-//       gameContainer.width / (reelManager.amountOfReels + 1),
-//       1
-//     );
-//     reelManager.animateReelContainer(
-//       gameContainer.children[3],
-//       gameContainer.width / (reelManager.amountOfReels + 1),
-//       2
-//     );
-//     reelManager.animateReelContainer(
-//       gameContainer.children[4],
-//       gameContainer.width / (reelManager.amountOfReels + 1),
-//       3
-//     );
-//   }
 
-//   spinButton.addListener("pointerdown", spin);
+  
 //   const menuButton = new PIXI.Graphics();
 //   menuButton.beginFill(0x000000, 0.5);
 //   menuButton.lineStyle(2, 0xffffff, 4);
