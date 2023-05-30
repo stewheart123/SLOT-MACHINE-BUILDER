@@ -2,7 +2,7 @@
  * sets up the symbol types, amount of reels and amount of symbols on a reel
  * animates the reel
  * defines the win lines
- * 
+ *
  */
 class ReelMechanism {
   constructor(reelTextures, symbolsInReel, amountOfReels, symbolContainer) {
@@ -24,6 +24,7 @@ class ReelMechanism {
           [3, 1],
         ],
         descripton: "top horizontal",
+        symbolArray: [],
       },
       {
         plot: [
@@ -33,6 +34,7 @@ class ReelMechanism {
           [3, 2],
         ],
         descripton: "second horizontal",
+        symbolArray: [],
       },
       {
         plot: [
@@ -42,6 +44,7 @@ class ReelMechanism {
           [3, 3],
         ],
         descripton: "third horizontal",
+        symbolArray: [],
       },
       {
         plot: [
@@ -51,6 +54,7 @@ class ReelMechanism {
           [3, 4],
         ],
         descripton: "bottom horizontal",
+        symbolArray: [],
       },
       {
         plot: [
@@ -60,6 +64,7 @@ class ReelMechanism {
           [3, 4],
         ],
         descripton: "top bottom diagonal",
+        symbolArray: [],
       },
       {
         plot: [
@@ -69,6 +74,7 @@ class ReelMechanism {
           [3, 1],
         ],
         descripton: "bottom top diagonal",
+        symbolArray: [],
       },
       {
         plot: [
@@ -78,6 +84,7 @@ class ReelMechanism {
           [0, 4],
         ],
         descripton: "first vertical",
+        symbolArray: [],
       },
       {
         plot: [
@@ -87,6 +94,7 @@ class ReelMechanism {
           [1, 4],
         ],
         descripton: "second vertical",
+        symbolArray: [],
       },
       {
         plot: [
@@ -96,6 +104,7 @@ class ReelMechanism {
           [2, 4],
         ],
         descripton: "third vertical",
+        symbolArray: [],
       },
       {
         plot: [
@@ -105,6 +114,7 @@ class ReelMechanism {
           [3, 4],
         ],
         descripton: "fourth vertical",
+        symbolArray: [],
       },
     ];
     //sets random numer in each reel
@@ -154,11 +164,14 @@ class ReelMechanism {
         reelSymbol.width = containerToAppend.width / (this.amountOfReels + 1);
         reelSymbol.height = containerToAppend.width / (this.amountOfReels + 1);
         reelContainer.addChild(reelSymbol);
-        reelSymbol.position.set(reelSymbol.width * i, (reelSymbol.height * y) - reelSymbol.height);
+        reelSymbol.position.set(
+          reelSymbol.width * i,
+          reelSymbol.height * y - reelSymbol.height
+        );
       }
       containerToAppend.addChild(reelContainer);
     }
-    
+
     //refine these values to be dynamic
     const maskWidth = containerToAppend.width;
     //const maskHeight = window.innerHeight - (headerHeight + footerHeight) ;
@@ -168,12 +181,16 @@ class ReelMechanism {
 
     const maskShape = new PIXI.Graphics();
     maskShape.beginFill(0xffffff);
-    
-    maskShape.drawRect((window.innerWidth / 2) - (maskWidth  / 2), maskYPos - 2, maskWidth,maskHeight + 2);
+
+    maskShape.drawRect(
+      window.innerWidth / 2 - maskWidth / 2,
+      maskYPos - 2,
+      maskWidth,
+      maskHeight + 2
+    );
     maskShape.endFill();
-    const mask = new PIXI.MaskData(maskShape, 'scissor', 0,0);
+    const mask = new PIXI.MaskData(maskShape, "scissor", 0, 0);
     containerToAppend.mask = mask;
-    
   }
   //works on one reel only
   shiftReelValues(reelToShift) {
@@ -218,50 +235,56 @@ class ReelMechanism {
         reelTicker.stop();
         count = 0;
         if (callback) {
+          this.assignSymbolsToWinLines(this.symbolContainer);
           callback();
         }
         return true;
       }
     }, 60);
   }
+  assignSymbolsToWinLines(container) {
+    this.winLines.forEach((element) => {
+      element.symbolArray = [
+        container.children[element.plot[0][0] + 1].children[element.plot[0][1]],
+        container.children[element.plot[1][0] + 1].children[element.plot[1][1]],
+        container.children[element.plot[2][0] + 1].children[element.plot[2][1]],
+        container.children[element.plot[3][0] + 1].children[element.plot[3][1]],
+      ];
+    });
+  }
 
   //ADD THIRD PROPERY WHICH IS INSIDE WINLINES : SYMBOLaRRAY
-  checkWinLine(inputArray, lineDescription) {
+  checkWinLine(inputArray, lineDescription, symbolArray) {
     /**
      * look at contents of array, if 3 or 4 in a row,
      * return line desription - used to identify the win line in a string message,
      * multiply each of the values against the reel assembly values to get the total
      */
-
-// 
-    let itemsToAnimate = [this.symbolContainer.children[1].children[2]];
     if (
       inputArray[0] === inputArray[1] &&
       inputArray[1] === inputArray[2] &&
       inputArray[2] === inputArray[3]
     ) {
       // RETURN THE SYMBOL ARRAY AS THE LAST ITEM
-      return ["FOUR IN A ROW! ", lineDescription, true, itemsToAnimate ];
+      return ["FOUR IN A ROW! ", lineDescription, true, symbolArray];
     }
     if (
       inputArray[0] !== inputArray[1] &&
       inputArray[1] === inputArray[2] &&
       inputArray[2] === inputArray[3]
     ) {
-      return ["THREE IN A ROW! ", lineDescription, true, itemsToAnimate];
+      return ["THREE IN A ROW! ", lineDescription, true, symbolArray];
     }
     if (
       inputArray[0] === inputArray[1] &&
       inputArray[1] === inputArray[2] &&
       inputArray[2] !== inputArray[3]
     ) {
-      return ["THREE IN A ROW! ", lineDescription, true, itemsToAnimate];
+      return ["THREE IN A ROW! ", lineDescription, true, symbolArray];
     }
 
     return ["NO WIN", "no win", false, null];
   }
-
-  
 
   checkAllWinLines() {
     console.clear();
@@ -273,9 +296,12 @@ class ReelMechanism {
         );
       }
       // ADD EXTRA ARGUMENT WHICH IS ELEMENT.SYMBOLaRRAY
-      let result = this.checkWinLine(resultArray, element.descripton);
+      let result = this.checkWinLine(
+        resultArray,
+        element.descripton,
+        element.symbolArray
+      );
       if (result[2]) {
-        
         this.animatorClass.winAnimator([result[3]]);
         /**
          * TODO queue up rall winning results and trigger an overlay showing

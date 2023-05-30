@@ -47,16 +47,34 @@ class Animator {
    * takes in the objects that have won as an array
    * loops through each one, making it grow in scale
    * connects to reelMechanism.checkAllWinLines
-   * 
+   *
    */
-  winAnimator(symbolArray) {
-    let scaleInitial;
-    symbolArray.forEach(element => {
-      scaleInitial = element[0].scale;
-      element[0].anchor.set(0.1);
-      element[0].scale.set(0.3);
-    });
 
-    //CREATE ANIMATION OF SCALE
+  winAnimator(symbolArray) {
+    const targetScale = 0.25;
+    const animationDuration = 80;
+
+    symbolArray[0].forEach((element) => {
+      const scaleInitial = element.scale.x; // Assuming scale.x is the initial scale value
+      const scaleDelta = targetScale - scaleInitial;
+      let elapsedTime = 0;
+
+      const ticker = new PIXI.Ticker();
+      ticker.start();
+
+      ticker.add((delta) => {
+        elapsedTime += delta;
+
+        if (elapsedTime <= animationDuration) {
+          const progress = elapsedTime / animationDuration;
+          const scale = scaleInitial + scaleDelta * progress;
+          element.scale.set(scale);
+        } else {
+          element.scale.set(scaleInitial);
+          ticker.stop();
+        }
+      });
+      element.scale.set(scaleInitial);
+    });
   }
 }
