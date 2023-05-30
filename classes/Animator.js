@@ -3,6 +3,7 @@
  */
 class Animator {
   //start position
+
   animateGameContainer(gameUIContainer) {
     gameUIContainer.position.set(
       app.view.width / 2 - gameUIPanelWidth / 2,
@@ -40,5 +41,22 @@ class Animator {
           (targetPosition.y - gameUIContainer.position.y) * speed;
       }
     });
+  }
+
+  /**
+   * takes in the objects that have won as an array
+   * loops through each one, making it grow in scale
+   * connects to reelMechanism.checkAllWinLines
+   * 
+   */
+  winAnimator(symbolArray) {
+    let scaleInitial;
+    symbolArray.forEach(element => {
+      scaleInitial = element[0].scale;
+      element[0].anchor.set(0.1);
+      element[0].scale.set(0.3);
+    });
+
+    //CREATE ANIMATION OF SCALE
   }
 }

@@ -5,12 +5,16 @@
  * 
  */
 class ReelMechanism {
-  constructor(reelTextures, symbolsInReel, amountOfReels) {
+  constructor(reelTextures, symbolsInReel, amountOfReels, symbolContainer) {
     this.reelAssembly = [];
     this.reelTextures = reelTextures;
     this.reel = [];
     this.amountOfReels = amountOfReels;
     this.symbolsInReel = symbolsInReel;
+    this.animatorClass = null;
+    this.symbolContainer = symbolContainer;
+
+    //ADAPT WIN LINES TO ALSO HAVE ANOTHER PROP CONTAINING ARRAY OF SYMBOLS FROM GAME CONTAINER
     this.winLines = [
       {
         plot: [
@@ -221,6 +225,7 @@ class ReelMechanism {
     }, 60);
   }
 
+  //ADD THIRD PROPERY WHICH IS INSIDE WINLINES : SYMBOLaRRAY
   checkWinLine(inputArray, lineDescription) {
     /**
      * look at contents of array, if 3 or 4 in a row,
@@ -228,30 +233,35 @@ class ReelMechanism {
      * multiply each of the values against the reel assembly values to get the total
      */
 
+// 
+    let itemsToAnimate = [this.symbolContainer.children[1].children[2]];
     if (
       inputArray[0] === inputArray[1] &&
       inputArray[1] === inputArray[2] &&
       inputArray[2] === inputArray[3]
     ) {
-      return ["FOUR IN A ROW! ", lineDescription, true];
+      // RETURN THE SYMBOL ARRAY AS THE LAST ITEM
+      return ["FOUR IN A ROW! ", lineDescription, true, itemsToAnimate ];
     }
     if (
       inputArray[0] !== inputArray[1] &&
       inputArray[1] === inputArray[2] &&
       inputArray[2] === inputArray[3]
     ) {
-      return ["THREE IN A ROW! ", lineDescription, true];
+      return ["THREE IN A ROW! ", lineDescription, true, itemsToAnimate];
     }
     if (
       inputArray[0] === inputArray[1] &&
       inputArray[1] === inputArray[2] &&
       inputArray[2] !== inputArray[3]
     ) {
-      return ["THREE IN A ROW! ", lineDescription, true];
+      return ["THREE IN A ROW! ", lineDescription, true, itemsToAnimate];
     }
 
-    return ["NO WIN", "no win", false];
+    return ["NO WIN", "no win", false, null];
   }
+
+  
 
   checkAllWinLines() {
     console.clear();
@@ -262,8 +272,11 @@ class ReelMechanism {
           this.reelAssembly[element.plot[x][0]][element.plot[x][1]].value
         );
       }
+      // ADD EXTRA ARGUMENT WHICH IS ELEMENT.SYMBOLaRRAY
       let result = this.checkWinLine(resultArray, element.descripton);
       if (result[2]) {
+        
+        this.animatorClass.winAnimator([result[3]]);
         /**
          * TODO queue up rall winning results and trigger an overlay showing
          *

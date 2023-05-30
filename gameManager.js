@@ -19,16 +19,19 @@ sceneLoader.makeGameScreen().then(() => {
       sceneLoader.gameScreenAssets.opal,
     ],
     5,
-    4
+    4,
+    sceneLoader.gameContainer
   );
 
   reelMechanism.resetReels(
     sceneLoader.gameContainer,
     sceneLoader.backgroundPanel
   );
-
+  console.log("----------------");
+  console.log(reelMechanism.symbolContainer);
   //add assets to animate for wins
   const animator = new Animator();
+  reelMechanism.animatorClass = animator;
   animator.animateGameContainer(sceneLoader.gameUIContainer);
   const bank = new Bank(1000);
   const playControls = new PlayControls(
