@@ -41,25 +41,25 @@ sceneLoader.makeGameScreen().then(() => {
   const gameInformation = new GameInformation(
     sceneLoader.gameUIPanel,
     bank,
-    gameState);
-    gameState.gameInformationClass = gameInformation;
+    gameState
+  );
+  gameState.gameInformationClass = gameInformation;
+
   gameInformation.setupGameInfo();
   gameInformation.updateGameInfo();
-
-  // Game Loop
   gameState.checkCanSpin();
-  //if bank state === canPayout
 
-  //if game state !== isSpinning
+  // dynamically adds click listeners to html document
+  var fundingButton = document.getElementById("add-funds");
+  fundingButton.addEventListener("click", function () {
+    bank.addFunds(1000);
+    gameState.displaySpins();
+  });
+  var collectWinningsButton = document.getElementById("collect-winnings");
+  collectWinningsButton.addEventListener("click", function () {
+    bank.payout(bank.balance);
+    gameState.displaySpins();
+  });
 });
-
-//bank
-//add funds
-//payout
-
-
-//handle redraw objects
-
-//add offset to reels, mask overlap
 
 //resizer function

@@ -19,7 +19,6 @@ class GameState {
         this.state = spinDescription;
     }
     determineSpinsLeft(){
-        console.log(this.bankClass.balance / this.spinPrice);
         return this.bankClass.balance / this.spinPrice;
     }
     checkCanSpin() {
@@ -30,9 +29,11 @@ class GameState {
             this.playControlsClass.blockPlay();
         }
     }
+    displaySpins() {
+        this.remainingSpins = this.determineSpinsLeft();
+        this.gameInformationClass.updateGameInfo();
+    }
     deductNextSpin() {
-        this.bankClass.balance -= this.spinPrice;
-        //update the UI
         this.bankClass.balance -= this.spinPrice;
         this.remainingSpins = this.determineSpinsLeft();
         this.gameInformationClass.updateGameInfo();

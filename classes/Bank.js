@@ -13,10 +13,11 @@ class Bank {
         }
     }
     payout(withdraw) {
+        console.log(withdraw + " wD");
         if(withdraw === this.balance ) {
             this.balance -= withdraw;
         }
-        this.collectedWinnings += widthdraw;        
+        this.collectedWinnings += withdraw;        
     }
     
 }
