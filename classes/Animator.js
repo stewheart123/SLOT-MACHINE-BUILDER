@@ -53,19 +53,20 @@ class Animator {
   winAnimator(symbolArray) {
     return new Promise((resolve) => {
       const targetScale = 0.25;
-      const animationDuration = 80;
-  
+      const animationDuration = 3000;
+
       symbolArray[0].forEach((element) => {
         const scaleInitial = element.scale.x; // Assuming scale.x is the initial scale value
         const scaleDelta = targetScale - scaleInitial;
         let elapsedTime = 0;
-  
+
         const ticker = new PIXI.Ticker();
+        const frameRate = PIXI.Ticker.shared.FPS;
         ticker.start();
-  
-        ticker.add((delta) => {
-          elapsedTime += delta;
-  
+
+        ticker.add(() => {
+          elapsedTime += frameRate;
+
           if (elapsedTime <= animationDuration) {
             const progress = elapsedTime / animationDuration;
             const scale = scaleInitial + scaleDelta * progress;
@@ -78,9 +79,6 @@ class Animator {
         });
         element.scale.set(scaleInitial);
       });
-
     });
   }
-
-
 }

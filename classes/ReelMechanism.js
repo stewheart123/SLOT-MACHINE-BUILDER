@@ -14,6 +14,7 @@ class ReelMechanism {
     this.animatorClass = null;
     this.symbolContainer = symbolContainer;
     this.bankClass = null;
+    this.scoreText = null;
 
     //ADAPT WIN LINES TO ALSO HAVE ANOTHER PROP CONTAINING ARRAY OF SYMBOLS FROM GAME CONTAINER
     this.winLines = [
@@ -175,11 +176,6 @@ class ReelMechanism {
 
     //refine these values to be dynamic
     const maskWidth = containerToAppend.width;
-    //const maskHeight = window.innerHeight - (headerHeight + footerHeight) ;
-
-    console.log(headerHeight);
-    console.log(containerToAppend);
-
     const maskShape = new PIXI.Graphics();
     maskShape.beginFill(0xffffff);
 
@@ -341,12 +337,37 @@ class ReelMechanism {
         this.winLines[i].symbolArray
       );
       if (result[2]) {
-        await this.animatorClass.winAnimator([result[3]]);
-
+        //add an await to line below to run animation, wait, score animation
+        this.animatorClass.winAnimator([result[3]]);
         let winAmount = (result[4][1] + 1) * 100 * result[4].length;
+        await this.scoreAnimation(winAmount);
         this.bankClass.balance += winAmount;
         console.log(result[0] + " " + result[1]);
       }
     }
+  }
+
+  scoreAnimation(winAmount) {
+    return new Promise((resolve) => {
+      let currentScore = this.bankClass.balance;
+      let targetScore = this.bankClass.balance + winAmount;
+      let duration = 1;
+
+      const scoreTicker = new PIXI.Ticker();
+      const frameRate = PIXI.Ticker.shared.FPS;
+      scoreTicker.add(() => {
+        const increment = Math.round(
+          (targetScore - this.bankClass.balance) / (duration * frameRate)
+        );
+        if (currentScore < targetScore) {
+          currentScore += increment;
+        } else {
+          scoreTicker.stop();
+          resolve();
+        }
+        this.scoreText.text = `Balance : ${currentScore}`;
+      });
+      scoreTicker.start();
+    });
   }
 }

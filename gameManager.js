@@ -27,8 +27,6 @@ sceneLoader.makeGameScreen().then(() => {
     sceneLoader.gameContainer,
     sceneLoader.backgroundPanel
   );
-  console.log("----------------");
-  console.log(reelMechanism.symbolContainer);
   //add assets to animate for wins
   const animator = new Animator();
   reelMechanism.animatorClass = animator;
