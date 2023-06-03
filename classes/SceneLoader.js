@@ -126,7 +126,7 @@ class SceneLoader {
     const headerContainer = new PIXI.Container();
     app.stage.addChild(headerContainer);
 
-    const gameTitle = new PIXI.Text("v2", {
+    const gameTitle = new PIXI.Text("Hidden Gems", {
       fontSize: titleFontSize,
       fill: 0xffffff,
       fontFamily: "Darumadrop One",
