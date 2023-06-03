@@ -34,10 +34,10 @@ class PlayControls {
         this.gameContainer.width / (this.ReelMechanism.amountOfReels + 1),
         0,
         () => {
-          this.ReelMechanism.checkAllWinLines();
-          
-          this.gameState.displaySpins();
-          this.gameState.checkCanSpin();
+          this.ReelMechanism.checkAllWinLines().then(() =>{
+            this.gameState.displaySpins();
+            this.gameState.checkCanSpin();
+          });          
         }
       );
       this.ReelMechanism.animateReelContainer(

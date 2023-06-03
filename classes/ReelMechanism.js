@@ -266,54 +266,87 @@ class ReelMechanism {
       symbolValues[1] === symbolValues[2] &&
       symbolValues[2] === symbolValues[3]
     ) {
-      return ["FOUR IN A ROW! ", lineDescription, true, symbolArray, symbolValues];
+      return [
+        "FOUR IN A ROW! ",
+        lineDescription,
+        true,
+        symbolArray,
+        symbolValues,
+      ];
     }
     if (
       symbolValues[0] !== symbolValues[1] &&
       symbolValues[1] === symbolValues[2] &&
       symbolValues[2] === symbolValues[3]
     ) {
-      let nonMatchingSymbolRemoved = [symbolArray[1], symbolArray[2], symbolArray[3]];
-      let symbolValuesMatching = [symbolValues[1], symbolValues[2], symbolValues[3]];
-      return ["THREE IN A ROW! ", lineDescription, true, nonMatchingSymbolRemoved, symbolValuesMatching];
+      let nonMatchingSymbolRemoved = [
+        symbolArray[1],
+        symbolArray[2],
+        symbolArray[3],
+      ];
+      let symbolValuesMatching = [
+        symbolValues[1],
+        symbolValues[2],
+        symbolValues[3],
+      ];
+      return [
+        "THREE IN A ROW! ",
+        lineDescription,
+        true,
+        nonMatchingSymbolRemoved,
+        symbolValuesMatching,
+      ];
     }
     if (
       symbolValues[0] === symbolValues[1] &&
       symbolValues[1] === symbolValues[2] &&
       symbolValues[2] !== symbolValues[3]
     ) {
-      let nonMatchingSymbolRemoved = [symbolArray[0],symbolArray[1],symbolArray[2]];
-      let symbolValuesMatching = [symbolValues[0], symbolValues[1],symbolValues[2]];
-      return ["THREE IN A ROW! ", lineDescription, true, nonMatchingSymbolRemoved, symbolValuesMatching];
+      let nonMatchingSymbolRemoved = [
+        symbolArray[0],
+        symbolArray[1],
+        symbolArray[2],
+      ];
+      let symbolValuesMatching = [
+        symbolValues[0],
+        symbolValues[1],
+        symbolValues[2],
+      ];
+      return [
+        "THREE IN A ROW! ",
+        lineDescription,
+        true,
+        nonMatchingSymbolRemoved,
+        symbolValuesMatching,
+      ];
     }
 
     return ["NO WIN", "no win", false, null, null];
   }
 
-  checkAllWinLines() {
+  async checkAllWinLines() {
     console.clear();
-    this.winLines.forEach((element) => {
+    for (let i = 0; i < this.winLines.length; i++) {
       let resultArray = [];
-      for (let x = 0; x < element.plot.length; x++) {
+      for (let x = 0; x < this.winLines[i].plot.length; x++) {
         resultArray.push(
-          this.reelAssembly[element.plot[x][0]][element.plot[x][1]].value
+          this.reelAssembly[this.winLines[i].plot[x][0]][
+            this.winLines[i].plot[x][1]
+          ].value
         );
       }
       let result = this.checkWinLine(
         resultArray,
-        element.descripton,
-        element.symbolArray
+        this.winLines[i].descripton,
+        this.winLines[i].symbolArray
       );
       if (result[2]) {
-        this.animatorClass.winAnimator([result[3]]);
-        let winAmount = ((result[4][1] + 1) *  100) * result[4].length;
-        console.log();
-        this.bankClass.balance += winAmount;
-        // add score to balance
+        await this.animatorClass.winAnimator([result[3]]);
 
+        let winAmount = (result[4][1] + 1) * 100 * result[4].length;
+        this.bankClass.balance += winAmount;
         console.log(result[0] + " " + result[1]);
       }
-    });
+    }
   }
-  
 }

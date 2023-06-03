@@ -51,30 +51,34 @@ class Animator {
    */
 
   winAnimator(symbolArray) {
-    const targetScale = 0.25;
-    const animationDuration = 80;
-
-    symbolArray[0].forEach((element) => {
-      const scaleInitial = element.scale.x; // Assuming scale.x is the initial scale value
-      const scaleDelta = targetScale - scaleInitial;
-      let elapsedTime = 0;
-
-      const ticker = new PIXI.Ticker();
-      ticker.start();
-
-      ticker.add((delta) => {
-        elapsedTime += delta;
-
-        if (elapsedTime <= animationDuration) {
-          const progress = elapsedTime / animationDuration;
-          const scale = scaleInitial + scaleDelta * progress;
-          element.scale.set(scale);
-        } else {
-          element.scale.set(scaleInitial);
-          ticker.stop();
-        }
+    return new Promise((resolve) => {
+      const targetScale = 0.25;
+      const animationDuration = 80;
+  
+      symbolArray[0].forEach((element) => {
+        const scaleInitial = element.scale.x; // Assuming scale.x is the initial scale value
+        const scaleDelta = targetScale - scaleInitial;
+        let elapsedTime = 0;
+  
+        const ticker = new PIXI.Ticker();
+        ticker.start();
+  
+        ticker.add((delta) => {
+          elapsedTime += delta;
+  
+          if (elapsedTime <= animationDuration) {
+            const progress = elapsedTime / animationDuration;
+            const scale = scaleInitial + scaleDelta * progress;
+            element.scale.set(scale);
+          } else {
+            ticker.stop();
+            element.scale.set(scaleInitial);
+            resolve();
+          }
+        });
+        element.scale.set(scaleInitial);
       });
-      element.scale.set(scaleInitial);
+
     });
   }
 

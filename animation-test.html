@@ -44,11 +44,17 @@
         } else {
           scoreTicker.stop();
           score = targetScore;
+          after();
+          
         }
         updateScoreText(score);
       });
 
       setTimeout(startAnimation, 500);
+      
+      function after() {
+        console.log('after');
+      }
 
       function startAnimation() {
         // calculateScoreIncrease();
