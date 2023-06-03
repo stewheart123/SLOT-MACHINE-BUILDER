@@ -77,4 +77,6 @@ class Animator {
       element.scale.set(scaleInitial);
     });
   }
+
+
 }

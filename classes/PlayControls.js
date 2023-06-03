@@ -8,7 +8,6 @@ class PlayControls {
     this.ReelMechanism = ReelMechanism;
     this.gameContainer = gameContainer;
     this.gameState = null;
-    this.gameInformationClass = null;
 
     this.spinButton.addListener("pointerdown", this.spin.bind(this));
     this.playActive = false;
@@ -16,14 +15,11 @@ class PlayControls {
   setPlayReady() {
     this.playActive = true;
     this.spinButton.interactive = true;
-    this.spinButton.cursor = "pointer"; 
+    this.spinButton.cursor = "pointer";
   }
   blockPlay() {
     this.playActive = false;
     this.spinButton.interactive = false;
-  }
-  test(){
-    console.log("TEST CALLBACK");
   }
 
   spin() {
@@ -39,7 +35,8 @@ class PlayControls {
         0,
         () => {
           this.ReelMechanism.checkAllWinLines();
-          this.spinButton.interactive = true;
+          
+          this.gameState.displaySpins();
           this.gameState.checkCanSpin();
         }
       );
@@ -53,12 +50,11 @@ class PlayControls {
         this.gameContainer.width / (this.ReelMechanism.amountOfReels + 1),
         2
       );
-       this.ReelMechanism.animateReelContainer(
+      this.ReelMechanism.animateReelContainer(
         this.gameContainer.children[4],
         this.gameContainer.width / (this.ReelMechanism.amountOfReels + 1),
         3
       );
     }
-    
   }
 }

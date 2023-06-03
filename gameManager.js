@@ -34,6 +34,7 @@ sceneLoader.makeGameScreen().then(() => {
   reelMechanism.animatorClass = animator;
   animator.animateGameContainer(sceneLoader.gameUIContainer);
   const bank = new Bank(1000);
+  reelMechanism.bankClass = bank;
   const playControls = new PlayControls(
     sceneLoader.spinButton,
     reelMechanism,
@@ -47,6 +48,7 @@ sceneLoader.makeGameScreen().then(() => {
     gameState
   );
   gameState.gameInformationClass = gameInformation;
+  reelMechanism.scoreText = gameInformation.balanceText;
 
   gameInformation.setupGameInfo();
   gameInformation.updateGameInfo();

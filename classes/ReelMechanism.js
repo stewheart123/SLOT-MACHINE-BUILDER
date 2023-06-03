@@ -13,6 +13,7 @@ class ReelMechanism {
     this.symbolsInReel = symbolsInReel;
     this.animatorClass = null;
     this.symbolContainer = symbolContainer;
+    this.bankClass = null;
 
     //ADAPT WIN LINES TO ALSO HAVE ANOTHER PROP CONTAINING ARRAY OF SYMBOLS FROM GAME CONTAINER
     this.winLines = [
@@ -254,36 +255,39 @@ class ReelMechanism {
   }
 
   //ADD THIRD PROPERY WHICH IS INSIDE WINLINES : SYMBOLaRRAY
-  checkWinLine(inputArray, lineDescription, symbolArray) {
+  checkWinLine(symbolValues, lineDescription, symbolArray) {
     /**
      * look at contents of array, if 3 or 4 in a row,
      * return line desription - used to identify the win line in a string message,
      * multiply each of the values against the reel assembly values to get the total
      */
     if (
-      inputArray[0] === inputArray[1] &&
-      inputArray[1] === inputArray[2] &&
-      inputArray[2] === inputArray[3]
+      symbolValues[0] === symbolValues[1] &&
+      symbolValues[1] === symbolValues[2] &&
+      symbolValues[2] === symbolValues[3]
     ) {
-      // RETURN THE SYMBOL ARRAY AS THE LAST ITEM
-      return ["FOUR IN A ROW! ", lineDescription, true, symbolArray];
+      return ["FOUR IN A ROW! ", lineDescription, true, symbolArray, symbolValues];
     }
     if (
-      inputArray[0] !== inputArray[1] &&
-      inputArray[1] === inputArray[2] &&
-      inputArray[2] === inputArray[3]
+      symbolValues[0] !== symbolValues[1] &&
+      symbolValues[1] === symbolValues[2] &&
+      symbolValues[2] === symbolValues[3]
     ) {
-      return ["THREE IN A ROW! ", lineDescription, true, symbolArray];
+      let nonMatchingSymbolRemoved = [symbolArray[1], symbolArray[2], symbolArray[3]];
+      let symbolValuesMatching = [symbolValues[1], symbolValues[2], symbolValues[3]];
+      return ["THREE IN A ROW! ", lineDescription, true, nonMatchingSymbolRemoved, symbolValuesMatching];
     }
     if (
-      inputArray[0] === inputArray[1] &&
-      inputArray[1] === inputArray[2] &&
-      inputArray[2] !== inputArray[3]
+      symbolValues[0] === symbolValues[1] &&
+      symbolValues[1] === symbolValues[2] &&
+      symbolValues[2] !== symbolValues[3]
     ) {
-      return ["THREE IN A ROW! ", lineDescription, true, symbolArray];
+      let nonMatchingSymbolRemoved = [symbolArray[0],symbolArray[1],symbolArray[2]];
+      let symbolValuesMatching = [symbolValues[0], symbolValues[1],symbolValues[2]];
+      return ["THREE IN A ROW! ", lineDescription, true, nonMatchingSymbolRemoved, symbolValuesMatching];
     }
 
-    return ["NO WIN", "no win", false, null];
+    return ["NO WIN", "no win", false, null, null];
   }
 
   checkAllWinLines() {
@@ -295,7 +299,6 @@ class ReelMechanism {
           this.reelAssembly[element.plot[x][0]][element.plot[x][1]].value
         );
       }
-      // ADD EXTRA ARGUMENT WHICH IS ELEMENT.SYMBOLaRRAY
       let result = this.checkWinLine(
         resultArray,
         element.descripton,
@@ -303,17 +306,14 @@ class ReelMechanism {
       );
       if (result[2]) {
         this.animatorClass.winAnimator([result[3]]);
-        /**
-         * TODO queue up rall winning results and trigger an overlay showing
-         *
-         * gather the values of the different stones
-         * show score
-         * show all wins
-         *
-         *  */
+        let winAmount = ((result[4][1] + 1) *  100) * result[4].length;
+        console.log();
+        this.bankClass.balance += winAmount;
+        // add score to balance
 
         console.log(result[0] + " " + result[1]);
       }
     });
   }
+  
 }
